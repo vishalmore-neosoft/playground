@@ -6,11 +6,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Outlet />}>
           <Route index element={<Dashboard />} />
-          <Route path="regex-builder" element={<RegexBuilder />} />
-        </Route>
-        <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </BrowserRouter>
   );
