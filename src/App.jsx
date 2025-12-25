@@ -8,7 +8,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/regex-builder" element={<RegexBuilder />} />
-        <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </BrowserRouter>
   )
