@@ -6,7 +6,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index path="/" element={<Dashboard />} />
+        <Route index element={<Dashboard />} />
         <Route path="/regex-builder" element={<RegexBuilder />} />
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
