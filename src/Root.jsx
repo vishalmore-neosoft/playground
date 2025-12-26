@@ -10,8 +10,8 @@ const theme = createTheme({
 export default function Root() {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Container>
+      <BrowserRouter basename="/playground">
+        <Container className="app-wrapper">
           <App />
         </Container>
       </BrowserRouter>

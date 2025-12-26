@@ -1,14 +1,7 @@
 import { useState, useMemo } from "react";
-import {
-  Box,
-  Stack,
-  IconButton,
-  Container,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Stack, IconButton, Tooltip, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -100,6 +93,8 @@ export default function RegexBuilder() {
             case "custom":
               r = s.config.regex || "";
               break;
+            default:
+              break;
           }
           return s.optional ? `(${r})?` : r;
         })
@@ -126,81 +121,86 @@ export default function RegexBuilder() {
 
   return (
     <div>
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={({ active, over }) => {
-            if (over && active.id !== over.id) {
-              const oldIndex = segments.findIndex((s) => s.id === active.id);
-              const newIndex = segments.findIndex((s) => s.id === over.id);
-              setSegments((s) => arrayMove(s, oldIndex, newIndex));
-            }
-          }}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={({ active, over }) => {
+          if (over && active.id !== over.id) {
+            const oldIndex = segments.findIndex((s) => s.id === active.id);
+            const newIndex = segments.findIndex((s) => s.id === over.id);
+            setSegments((s) => arrayMove(s, oldIndex, newIndex));
+          }
+        }}
+      >
+        <SortableContext
+          items={segments.map((s) => s.id)}
+          strategy={horizontalListSortingStrategy}
         >
-          <SortableContext
-            items={segments.map((s) => s.id)}
-            strategy={horizontalListSortingStrategy}
+          <Typography variant="body1" color="primary" gutterBottom>
+            Start adding regex segments
+          </Typography>
+          <Stack
+            direction="row"
+            spacing={1}
+            className="regex-segment-container"
           >
-            <Typography variant="body1" color="primary" gutterBottom>
-              Start adding regex segments
-            </Typography>
             <Stack
+              className="regex-segments"
+              gap={1}
               direction="row"
-              spacing={1}
-              className="regex-segment-container"
+              flexGrow={1}
+              alignItems="center"
             >
-              <Stack className="regex-segments" gap={1} direction="row" flexGrow={1} alignItems="center">
-                {segments.map((seg) => (
-                  <SortableChip
-                    key={seg.id}
-                    segment={seg}
-                    isEditing={editingId === seg.id}
-                    editingValue={editingValue}
-                    setEditingValue={setEditingValue}
-                    onDoubleClick={(s) => {
-                      if (s.type === "fixed") {
-                        setEditingId(s.id);
-                        setEditingValue(s.config.value);
-                      } else {
-                        setConfigSeg(s);
-                        setAnchorEl(document.getElementById(s.id));
-                      }
-                    }}
-                    onChangeType={changeSegmentType}
-                    onDelete={(id) =>
-                      setSegments((prev) => prev.filter((s) => s.id !== id))
+              {segments.map((seg) => (
+                <SortableChip
+                  key={seg.id}
+                  segment={seg}
+                  isEditing={editingId === seg.id}
+                  editingValue={editingValue}
+                  setEditingValue={setEditingValue}
+                  onDoubleClick={(s) => {
+                    if (s.type === "fixed") {
+                      setEditingId(s.id);
+                      setEditingValue(s.config.value);
+                    } else {
+                      setConfigSeg(s);
+                      setAnchorEl(document.getElementById(s.id));
                     }
-                    saveEdit={handleSaveEdit}
-                    handleKeyDown={(e) => {
-                      if (e.key === "Escape") {
-                        setEditingId(null);
-                      } else if (e.key === "Enter") {
-                        handleSaveEdit();
-                      }
-                    }}
-                  />
-                ))}
-              </Stack>
-              <Tooltip title={"Add regex segment"}>
-                <IconButton
-                  variant="outlined"
-                  color="primary"
-                  size="small"
-                  onClick={addSegment}
-                >
-                  <AddIcon />
-                </IconButton>
-              </Tooltip>
+                  }}
+                  onChangeType={changeSegmentType}
+                  onDelete={(id) =>
+                    setSegments((prev) => prev.filter((s) => s.id !== id))
+                  }
+                  saveEdit={handleSaveEdit}
+                  handleKeyDown={(e) => {
+                    if (e.key === "Escape") {
+                      setEditingId(null);
+                    } else if (e.key === "Enter") {
+                      handleSaveEdit();
+                    }
+                  }}
+                />
+              ))}
             </Stack>
-          </SortableContext>
-        </DndContext>
-        {regex && (
-          <div className="regex-output-container">
-            <code>{regex}</code>
-            <Tooltip title={copied ? "Copied!" : "Copy"}>
-              {
-                !copied?
-                <IconButton
+            <Tooltip title={"Add regex segment"}>
+              <IconButton
+                variant="outlined"
+                color="primary"
+                size="small"
+                onClick={addSegment}
+              >
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        </SortableContext>
+      </DndContext>
+      {regex && (
+        <div className="regex-output-container">
+          <code>{regex}</code>
+          <Tooltip title={copied ? "Copied!" : "Copy"}>
+            {!copied ? (
+              <IconButton
                 edge="end"
                 size="small"
                 onClick={handleCopy}
@@ -211,40 +211,36 @@ export default function RegexBuilder() {
                   color="primary"
                   fontSize="8px"
                 />
-              </IconButton>:
-              <IconButton
-                edge="end"
-                size="small"
-                disabled
-                tabIndex={-1}
-              >
+              </IconButton>
+            ) : (
+              <IconButton edge="end" size="small" disabled tabIndex={-1}>
                 <CheckCircleIcon
                   variant="contained"
                   color="success"
                   fontSize="8px"
                 />
               </IconButton>
-              }
-            </Tooltip>
-          </div>
-        )}
+            )}
+          </Tooltip>
+        </div>
+      )}
 
-        <ConfigPopover
-          anchorEl={anchorEl}
-          segment={configSeg}
-          onChange={(k, v) =>
-            setConfigSeg((s) => ({ ...s, config: { ...s.config, [k]: v } }))
-          }
-          onSave={() => {
-            setSegments((p) =>
-              p.map((x) => (x.id === configSeg.id ? configSeg : x))
-            );
-            setAnchorEl(null);
-          }}
-          onClose={() => setAnchorEl(null)}
-        />
+      <ConfigPopover
+        anchorEl={anchorEl}
+        segment={configSeg}
+        onChange={(k, v) =>
+          setConfigSeg((s) => ({ ...s, config: { ...s.config, [k]: v } }))
+        }
+        onSave={() => {
+          setSegments((p) =>
+            p.map((x) => (x.id === configSeg.id ? configSeg : x))
+          );
+          setAnchorEl(null);
+        }}
+        onClose={() => setAnchorEl(null)}
+      />
 
-        <RegexExamples regex={regex} />
-      </div>
+      <RegexExamples regex={regex} />
+    </div>
   );
 }

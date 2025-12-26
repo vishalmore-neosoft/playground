@@ -1,3 +1,10 @@
+*{
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+  font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -6,7 +13,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #fefefe;
-  padding: 16px;
 }
 
 code {
@@ -50,4 +56,21 @@ code {
   border-radius: 3px;
   cursor: pointer;
   background-color: #ebebeb;
+}
+
+.oops-not-found {
+  font-size: 120px;
+  font-weight: 900;
+  background-image: url("./assets/images/rTZW4f02zY8.jpg");
+  background-size: cover;
+  background-position: center;
+  font-size: 10rem;
+  font-weight: bold;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.app-wrapper{
+  padding: 18px 0px;
 }
