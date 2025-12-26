@@ -15,7 +15,7 @@ function Dashboard() {
     <div>
       {widgets.map((widget) => {
         return (
-          <Button variant="contained" color="primary" disableRipple disableElevation onClick={() => navigate(widget.url)}>{widget.label}</Button>
+          <Button variant="contained" color="primary" disableRipple disableElevation onClick={() => navigate(`widgets/${widget.url}`)}>{widget.label}</Button>
         );
       })}
     </div>
