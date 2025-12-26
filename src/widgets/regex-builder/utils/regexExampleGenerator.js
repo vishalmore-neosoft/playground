@@ -44,7 +44,7 @@ const charClassGenerator = (cls) => {
   if (cls.includes('a-z')) gens.push(RANDOM.lower);
   if (cls.includes('A-Z')) gens.push(RANDOM.upper);
 
-  cls.replace(/[^a-zA-Z0-9\-]/g, '')
+  cls.replace(/[^a-zA-Z0-9-]/g, '')
     .split('')
     .forEach((c) => {
       if (!['a', 'z', 'A', 'Z', '0', '9', '-'].includes(c)) {
@@ -105,5 +105,5 @@ export const generateExampleFromRegex = (regex) => {
   return out;
 };
 
-export const generateRegexExamples = (regex, count = 25) =>
+export const generateRegexExamples = (regex, count = 5) =>
   Array.from({ length: count }, () => generateExampleFromRegex(regex));

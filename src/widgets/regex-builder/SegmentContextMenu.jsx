@@ -1,10 +1,8 @@
 import {
   Menu,
   MenuItem,
-  ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function SortableContextMenu({ anchorEl, onClose, onSelect }) {
   const types = [
